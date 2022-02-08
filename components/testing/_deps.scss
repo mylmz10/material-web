@@ -1,0 +1,17 @@
+//
+// Copyright 2022 Google LLC
+// SPDX-License-Identifier: Apache-2.0
+//
+
+@use '../sass/tokens';
+
+$dark: (
+  md-sys-color: tokens.md-sys-color-values-dark(),
+  md-sys-elevation:
+    tokens.md-sys-elevation-values(
+      $deps: (
+        md-sys-color: tokens.md-sys-color-values-dark(),
+      ),
+      $exclude-hardcoded-values: true,
+    ),
+);

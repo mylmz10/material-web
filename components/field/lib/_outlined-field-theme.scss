@@ -75,20 +75,7 @@ $_default-deps: (
   @return $values;
 }
 
-$light-theme: values();
-$dark-theme: values(
-  (
-    md-sys-color: tokens.md-sys-color-values-dark(),
-    md-sys-elevation:
-      tokens.md-sys-elevation-values(
-        $deps: (
-          md-sys-color: tokens.md-sys-color-values-dark(),
-        ),
-        $exclude-hardcoded-values: true,
-      ),
-  ),
-  $exclude-hardcoded-values: true
-);
+$_reference-theme: values();
 
 @function _resolve-theme($theme, $resolvers) {
   @return label-theme.resolve-theme($theme, $resolvers);
@@ -96,8 +83,11 @@ $dark-theme: values(
 
 @mixin theme($theme, $resolvers: resolvers.$material) {
   // Add resolved tokens so that $theme may specify them.
-  $reference: map.merge($light-theme, _resolve-theme($light-theme, $resolvers));
-  $theme: theme.validate-theme($light-theme, $theme);
+  $reference: map.merge(
+    $_reference-theme,
+    _resolve-theme($_reference-theme, $resolvers)
+  );
+  $theme: theme.validate-theme($_reference-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   $theme: theme.create-theme-vars($theme, outlined-field);
 
@@ -107,7 +97,7 @@ $dark-theme: values(
 $_selectors: field-theme.$selectors;
 
 @mixin theme-styles($theme, $resolvers: resolvers.$material) {
-  $theme: theme.validate-theme-styles($light-theme, $theme);
+  $theme: theme.validate-theme-styles($_reference-theme, $theme);
   $theme: _resolve-theme($theme, $resolvers);
   $theme: theme.create-theme-vars($theme, outlined-field);
 
